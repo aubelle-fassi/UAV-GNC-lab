@@ -1,65 +1,64 @@
 # 🚁 UAV-GNC-Lab
-Personal portfolio on Guidance, Navigation; Control (GNC) for UAVs | Flight Control | Estimation | Embedded Systems | MATLAB; Simulink
 
-> **Guidance • Navigation • Control for Unmanned Aerial Vehicles**
+Bienvenue sur mon portfolio consacré à l'automatique, à l'estimation et
+au contrôle des systèmes autonomes et aéronautiques.
 
-Welcome to **UAV-GNC-Lab**, my personal engineering portfolio dedicated to the study and development of Guidance, Navigation and Control (GNC) systems for Unmanned Aerial Vehicles (UAVs).
+Ce dépôt rassemble mes travaux académiques et personnels autour de la
+modélisation des systèmes dynamiques, de la commande, de l'observation
+d'état et de l'estimation.
 
-This repository documents my learning journey through control engineering, flight dynamics, state estimation, autonomous navigation and embedded systems using MATLAB/Simulink and related engineering tools.
+## Domaines étudiés
 
-My objective is to progressively build the technical skills required to design reliable and autonomous flight control systems.
+- Automatique et contrôle-commande
+- Guidage, navigation et contrôle (GNC)
+- Modélisation de systèmes dynamiques
+- Commande PID,LQR et retour d'état
+- Observateurs d'état
+- Filtrage de Kalman et EKF
+- Traitement du signal
+- MATLAB / Simulink
+  
 
-# 🎯 Mission
+## Projets
 
-The purpose of this portfolio is to explore the core disciplines involved in autonomous flight control:
+### 01 — Suivi de trajectoire d'un quadrotor
 
-- Flight Dynamics
-- Automatic Control
-- State Estimation
-- Sensor Fusion
-- Guidance Algorithms
-- Navigation
-- Embedded Flight Systems
+Modélisation et commande d'un drone sous MATLAB/Simulink.
 
-Each project is developed as an engineering study including mathematical modeling, controller design, simulations and technical documentation.
+Travaux réalisés :
+- modélisation du système dynamique non linéaire ;
+- linéarisation autour de plusieurs points d'équilibre ;
+- étude de la commandabilité et de l'observabilité ;
+- conception d'un observateur de Luenberger ;
+- passage au temps discret ;
+- implémentation d'un filtre de Kalman étendu (EKF) pour l'estimation d'état ;
+- commande par retour d'état augmenté ;
+- validation des performances par simulation.
 
-# 📚 Repository Roadmap
+### 02 — Modélisation et commande d'une moto auto-équilibrée
 
-This laboratory will progressively include projects such as:
+Étude et simulation d'un système instable nécessitant une stabilisation
+en boucle fermée.
 
-- Flight Dynamics Modeling
-- VTOL Control
-- PID Flight Control
-- State Feedback Control
-- State Observers
-- Kalman Filter
-- Extended Kalman Filter (EKF)
-- Sensor Fusion
-- UAV Navigation
-- ArduPilot
-- PX4
+Travaux réalisés :
+- modélisation physique du système ;
+- implémentation sous MATLAB/Simulink ;
+- conception d'un correcteur PID ;
+- Tests physiques sur la moto ; 
 
-# 🛠 Tools & Technologies
+### 03 — Étude des lois de commande d'un VTOL
 
-- MATLAB
-- Simulink
-- Python
-- C/C++
-- Git & GitHub
-- Linux
+Étude bibliographique consacrée au contrôle des véhicules à décollage
+et atterrissage verticaux.
 
+Loi de commandes étudiées :
+- LQR ;
+- Backstepping ;
+- MPC ;
+- NMPC.
 
-# 👩‍💻 About Me
+## Objectif du portfolio
 
-I am currently pursuing a Master's degree in Automatic Control, Robotics and Signal Processing at Polytech Orléans (France).
-
-My interests focus on:
-
-- Flight Control
-- Guidance, Navigation & Control (GNC)
-- Autonomous UAVs
-- Control Theory
-- State Estimation
-- Embedded Systems
-
-This repository reflects my continuous learning journey toward becoming a GNC engineer in the aerospace industry.
+À travers ces projets, je cherche à développer une compréhension
+progressive des problématiques de contrôle, d'estimation et de
+navigation appliquées aux drones et aux systèmes autonomes.
