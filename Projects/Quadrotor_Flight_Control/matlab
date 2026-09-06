@@ -1,1 +1,194 @@
+clear
+clc
 
+alpha = deg2rad(1);
+
+m = 0.365;
+g = 9.81;
+l = 0.17;
+J = 2362575.87e-9;
+
+a = m/cos(alpha);
+b = J/(l*cos(alpha));
+c = J*tan(alpha)/(m*l);
+
+%point d'équilibre 1
+theta0=deg2rad(0);
+theta01=deg2rad(10);
+theta02=deg2rad(20);
+v10=g/cos(theta0);
+v20=0;
+
+%matrices de linéarisation du système
+A0=[zeros(2) eye(2) zeros(2); zeros(2) zeros(2) [-c*v20*sin(theta0)-v10*cos(theta0) 0; c*v20*cos(theta0)-v10*sin(theta0) 0]; zeros(2) zeros(2) [0 1;0 0]];
+B0=[zeros(2); [-sin(theta0) c*cos(theta0); cos(theta0) c*sin(theta0)]; [0 0;0 1]];
+C=[eye(2) zeros(2) zeros(2); zeros(2) zeros(2) eye(2)];
+A01=[zeros(2) eye(2) zeros(2); zeros(2) zeros(2) [-c*v20*sin(theta01)-v10*cos(theta01) 0; c*v20*cos(theta01)-v10*sin(theta01) 0]; zeros(2) zeros(2) [0 1;0 0]];
+B01=[zeros(2); [-sin(theta01) c*cos(theta01); cos(theta01) c*sin(theta01)]; [0 0;0 1]];
+A02=[zeros(2) eye(2) zeros(2); zeros(2) zeros(2) [-c*v20*sin(theta02)-v10*cos(theta02) 0; c*v20*cos(theta02)-v10*sin(theta02) 0]; zeros(2) zeros(2) [0 1;0 0]];
+B02=[zeros(2); [-sin(theta02) c*cos(theta02); cos(theta02) c*sin(theta02)]; [0 0;0 1]];
+D=zeros(4,2);
+
+%reponse frequentielle
+sys0 = ss(A0,B0,C,D);
+sys10 = ss(A01,B01,C,D);
+sys20 = ss(A02,B02,C,D);
+% figure
+% bode(sys0)
+% figure
+% bode(sys10)
+% figure
+% bode(sys20)
+
+%poles des systèmes linéarisés 
+lambda0=eig(A0);
+lambda01=eig(A01);
+lambda02=eig(A02);
+
+%observateurs 
+Ce=[1 0 0 0 0 0; 0 1 0 0 0 0];
+De=[0 0;0 0];
+co=ctrb(A0,B0); %(A01,B01) (A02,B02)
+ob=obsv(A0,Ce);  %(A01,C) (A02,C)
+rank(co);
+rank(ob);
+L=place(A0',Ce',[-2 -4 -6 -8 -10 -12]);
+Aobs=A0-L'*Ce;
+Bobs=[B0 L'];
+Cobs=eye(6);
+Dobsv=zeros(6,4);
+%stabilité de l'observateur 
+lambdaObs0 = eig(A0 - L' * Ce);
+lambdaObs01 = eig(A01 - L' * Ce);
+lambdaObs02 = eig(A02 - L' * Ce);
+%observateur non linéaire
+Lo=L';
+L1=Lo(1,:);
+L2=Lo(2,:);
+L3=Lo(3,:);
+L4=Lo(4,:);
+L5=Lo(5,:);
+L6=Lo(6,:);
+% gain commande
+G=place(A0,B0,[-0.5,-1,-1.5,-2,-2.5,-3]);
+
+%stabilité de la commande
+lambdaCo0 = eig(A0 - B0 * G);
+lambdaCo1 = eig(A01 - B0 * G);
+lambdaCo2 = eig(A02 - B0 * G);
+
+%etat augmenté calcul du gain
+Ca=[1 0 0 0 0 0];
+Aa=[A0 zeros(6,1); -Ca 0 ];
+Ba=[B0; [0 0]];
+rank(ctrb(Aa,Ba))
+ka=place(Aa,Ba,[-0.5,-1,-1.5,-2,-2.5,-3,-3.5]);
+
+% système à temps discret 
+Te=0.01;
+syst_dis=c2d(sys0, Te, 'zoh');
+Ad = syst_dis.A;
+Bd = syst_dis.B;
+Cd = syst_dis.C;
+Dd = syst_dis.D;
+rank(ctrb(Ad,Bd));
+
+%observateur discret
+Ld=place(Ad',Ce', exp(Te*[-10, -15, -20, -25, -30, -35]));
+Aod=(Ad-Ld'*Ce);
+Bod=[Bd Ld'];
+Cod=eye(6);
+Dod=zeros(6,4);
+
+% Filtre de Kalman Etendu (EKF)
+%recupération des mesures des capteurs de position x et z
+out = sim('drone_systeme_temps_discret');
+y_data = out.y_reel;    
+N = length(y_data);  % nombres d'echantillons
+% vecteur d'état estimé initial (t=0)
+x_est = [0; 0; 0; 0; 0; 0];
+x_historique = zeros(6, N); % stockage des 6 états sur les 1001 instants
+pk = eye(6) * 10; %certitude initiale sur les etats à t=0
+Q=eye(6)*0.0001; %bruit sur le modèle
+R=eye(2)*0.0001; %bruit sur le capteur
+for k=1:N
+    y_mesure=y_data(k,:)'; %recupération des mesure x et z à chanque instant d'échantillonnage
+    v1=g;
+    v2=0;
+    theta_est=x_est(5);
+    % matrice jacobienne
+    A=[zeros(2) eye(2) zeros(2); zeros(2) zeros(2) [-c*v2*sin(theta_est)-v1*cos(theta_est) 0; c*v2*cos(theta_est)-v1*sin(theta_est) 0]; zeros(2) zeros(2) [0 1;0 0]];
+    Aj=eye(6)+Te*A;
+    %prédiction d'état
+    x_k=x_est(1);
+    z_k=x_est(2);
+    vx_k = x_est(3);
+    vz_k = x_est(4);
+    theta_k = x_est(5);
+    theta_dot_k=x_est(6);
+    f_non_lin=[x_k + Te*vx_k;z_k + Te*vz_k;vx_k + Te*(c*v2*cos(theta_k)-v1*sin(theta_k));vz_k + Te*(c*v2*sin(theta_k)+v1*cos(theta_k)-g);theta_k + Te*theta_dot_k;theta_dot_k + Te*v2];
+    %calcul de l'incertitude et du gain de kalman
+    pk_pred= Aj*pk*Aj'+Q;
+    kk=pk_pred*Ce'*(Ce*pk_pred*Ce'+R)^-1;
+    % calcul de l'erreur d'estimation et de l'etat estimé
+    e=y_mesure-(Ce*f_non_lin);
+    x_est = f_non_lin + kk * e;
+    pk = (eye(6) - kk * Ce) * pk_pred;
+    x_historique(:, k) = x_est;
+end     
+%données simulink
+% temps=(0:N-1)*Te;
+% donnees_simulink=
+temps = (0:N-1)*Te;
+figure;
+% Courbe 1 estimation issue de l'EKF
+plot(temps, x_historique(5, :), 'r', 'LineWidth', 2); hold on;
+
+% Courbe 2 trajectoire récupérée de Simulink
+theta_vrai = out.theta_reel_sim; 
+plot(temps, theta_vrai, 'b--', 'LineWidth', 1.5);
+
+grid on;
+xlabel('Temps (secondes)');
+ylabel('Angle \theta (radians)');
+title('Superposition parfaite de la dynamique réelle et de l''estimation EKF');
+legend('Angle Estimé (EKF)', 'Angle Réel (Simulink)');
+figure;
+plot(temps, x_historique(6, :), 'r', 'LineWidth', 2); hold on;
+theta_dotvrai = out.simout; 
+plot(temps, theta_dotvrai, 'b--', 'LineWidth', 1.5); 
+grid on;
+xlabel('Temps (secondes)');
+ylabel('Vitesse angulaire  theta_dot (radians/s)');
+title('Estimation de la vitesse angulaire avec EKF');
+legend('Vitesse angulaire Estimée (EKF)', 'Vitesse angulaire Réelle (Simulink)');
+% Commande
+% kd = place(Ad,Bd, exp(Te*[-10, -15, -20, -25, -30, -35]));
+Cd_pos = [1 0 0 0 0 0]; 
+
+% système augmanté discret
+Aad = [Ad, zeros(6,1) ; -Te*Cd_pos, 1];
+Bad = [Bd ; zeros(1,2)];
+% Vérification commandabilité
+rank(ctrb(Aad, Bad))
+P_discret = exp([-2.5, -2.8, -3.0, -3.2, -3.5, -3.8, -1.5] * Te); 
+Kad = place(Aad, Bad, P_discret);
+Kd  = Kad(:, 1:6);  % Matrice 2x6 (appliquée sur le vecteur x_est de l'EKF)
+Kid = Kad(:, 7);    % Vecteur colonne 2x1 (appliqué sur l'intégrateur d'erreur)
+
+% Calcul de l'erreur statique sur la position x estimée
+consigne_x = 0; 
+erreur_x = consigne_x - x_est(1);
+
+%intégrateur discret 
+xi_erreur=0;
+xi_erreur = xi_erreur + Te * erreur_x;
+
+% Calcul du vecteur de commande global 
+% u_commande(1) correspond à v1 et u_commande(2) correspond à v2
+u_commande = - Kd * x_est - Kid * xi_erreur;
+
+%commandes calculées pour l'itération suivante
+v1c = u_commande(1)
+v2c = u_commande(2)
+ 
