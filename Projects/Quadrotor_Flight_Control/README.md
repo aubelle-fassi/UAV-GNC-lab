@@ -44,12 +44,12 @@ $$
 
 avec :
 
- -$(\x\)$ : position horizontale ; 
-- $(\z\)$: position verticale ;
-- $(\v_x\)$ : vitesse horizontale ;
-- $(\v_z\)$ : vitesse verticale ;
-- $(\\theta\)$ : angle d'attitude ;
-- $(\\dot{\theta}\)$ : vitesse angulaire.
+ - $\(x\)$ : position horizontale ;
+ - $\(z\)$ : position verticale ;
+ - $\(v_x\)$ : vitesse horizontale ;
+ - $\(v_z\)$ : vitesse verticale ;
+ - $\(\theta\)$ : angle d'attitude ;
+ - $\(\dot{\theta}\)$ : vitesse angulaire.
   
 Après transformation des variables de commande, la dynamique utilisée
 dans le projet est donnée par :
@@ -67,136 +67,31 @@ $$
 ## 2. Linéarisation du modèle
 
 Afin d'étudier le comportement local du système, le modèle non linéaire
-est linéarisé autour de 03 points d'équilibre : 0°, 10°, 20°
-
-
-Pour  le modèle linéarisé s'écrit :
-
-\[
-\delta\dot{X}
-=
-A_0\delta X+B_0\delta U
-\]
-
-avec :
-
-\[
-A_0=
-\begin{bmatrix}
-0&0&1&0&0&0\\
-0&0&0&1&0&0\\
-0&0&0&0&-9.81&0\\
-0&0&0&0&0&0\\
-0&0&0&0&0&1\\
-0&0&0&0&0&0
-\end{bmatrix}
-\]
-
-et
-
-\[
-B_0=
-\begin{bmatrix}
-0&0\\
-0&0\\
-0&0.0007\\
-1&0\\
-0&0\\
-0&1
-\end{bmatrix}
-\]
-
+est linéarisé autour de 03 points d'équilibre :
+- $\theta_e = 0^\circ$
+- $\theta_e = 10^\circ$
+- $\theta_e = 20^\circ$
 Les matrices obtenues pour \(10^\circ\) et \(20^\circ\) montrent que la
 dynamique locale dépend de l'angle d'équilibre.
-
 Cette étude permet notamment d'observer l'évolution du couplage entre
 les mouvements horizontaux, verticaux et l'attitude lorsque le point
 de fonctionnement change.
 
----
+## Observation et estimation d'état
 
-## 3. Analyse de la commandabilité et de l'observabilité
+Une première estimation des états est réalisée à l'aide d'un observateur
+de Luenberger conçu par placement de pôles.
 
-La commandabilité du système est étudiée à l'aide de la matrice de
-Kalman :
+L'observateur est ensuite intégré au modèle non linéaire afin de comparer
+les états réels aux états estimés.
 
-\[
-\mathcal{C}
-=
-\begin{bmatrix}
-B & AB & A^2B & \cdots & A^{n-1}B
-\end{bmatrix}
-\]
+Le modèle est également discrétisé avec une période d'échantillonnage de
+$T_e = 0.01\,s$.
 
-L'observabilité est également étudiée à partir des mesures disponibles.
+Un filtre de Kalman étendu (EKF) est ensuite implémenté à partir du modèle
+non linéaire et des mesures de position $x$ et $z$.
 
-Dans le cadre de ce projet, les sorties utilisées pour l'estimation
-sont les positions :
 
-\[
-Y=
-\begin{bmatrix}
-x\\
-z
-\end{bmatrix}
-\]
-
-L'étude montre que l'utilisation conjointe des mesures \(x\) et \(z\)
-permet de reconstruire l'ensemble des six états du modèle.
-
----
-
-## 4. Observateur de Luenberger
-
-Un observateur d'état de Luenberger est conçu à partir du modèle
-linéarisé autour de \(\theta_e=0^\circ\).
-
-L'équation de l'observateur est :
-
-\[
-\dot{\hat{X}}
-=
-A\hat{X}
-+
-BU
-+
-L(Y-\hat{Y})
-\]
-
-avec :
-
-\[
-\hat{Y}=C\hat{X}
-\]
-
-Le gain \(L\) est obtenu par placement de pôles.
-
-Dans le projet, les pôles de l'observateur sont choisis à :
-
-\[
--2,\;-4,\;-6,\;-8,\;-10,\;-12
-\]
-
-L'observateur permet ensuite d'estimer les états non directement mesurés
-à partir des positions disponibles.
-
----
-
-## 5. Observateur non linéaire
-
-L'observateur conçu à partir du modèle linéarisé est ensuite intégré
-dans une architecture utilisant directement la dynamique non linéaire
-du quadricoptère.
-
-L'objectif est de comparer les états réels du modèle avec les états
-reconstruits par l'observateur.
-
-Cette étape permet de vérifier le comportement de l'estimation lorsque
-le système est décrit par sa dynamique non linéaire.
-
-### Modèle Simulink
-
-Le modèle correspondant est disponible dans :
 
 `observateur_non_lineaire.slx`
 
