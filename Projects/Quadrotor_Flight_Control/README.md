@@ -44,12 +44,12 @@ $$
 
 avec :
 
- -$\x\$ : position horizontale ; 
-- $\z\$: position verticale ;
-- $\v_x\$ : vitesse horizontale ;
-- $\v_z\$ : vitesse verticale ;
-- $\\theta\$ : angle d'attitude ;
-- $\\dot{\theta}\$ : vitesse angulaire.
+ -$(\x\)$ : position horizontale ; 
+- $(\z\)$: position verticale ;
+- $(\v_x\)$ : vitesse horizontale ;
+- $(\v_z\)$ : vitesse verticale ;
+- $(\\theta\)$ : angle d'attitude ;
+- $(\\dot{\theta}\)$ : vitesse angulaire.
   
 Après transformation des variables de commande, la dynamique utilisée
 dans le projet est donnée par :
