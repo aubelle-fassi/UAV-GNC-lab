@@ -34,16 +34,23 @@ Le système étudié est un modèle simplifié d'un quadricoptère évoluant
 dans un plan vertical.
 
 Le vecteur d'état est défini par :
-X=(x, z, v_x, v_z, theta, theta_dot)
+Le vecteur d'état est défini par :
+
+$$
+X =
+\begin{bmatrix}
+x & z & v_x & v_z & \theta & \dot{\theta}
+\end{bmatrix}^{T}
+$$
+
 avec :
 
-- x : position horizontale ;
-- z : position verticale ;
-- v_x : vitesse horizontale ;
-- v_z : vitesse verticale ;
-- theta : angle d'attitude ;
-- theta_dot : vitesse angulaire.
-
+- \(x\) : position horizontale ;
+- \(z\) : position verticale ;
+- \(v_x\) : vitesse horizontale ;
+- \(v_z\) : vitesse verticale ;
+- \(\theta\) : angle d'attitude ;
+- \(\dot{\theta}\) : vitesse angulaire.
 Après transformation des variables de commande, la dynamique utilisée
 dans le projet est donnée par :
 
