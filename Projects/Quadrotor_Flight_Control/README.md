@@ -51,8 +51,8 @@ $$
 \begin{aligned}
 \dot{x} &= v_x \\
 \dot{z} &= v_z \\
-\dot{v}_x &= c\,v_2\cos(\theta)-v_1\sin(\theta) \\
-\dot{v}_z &= c\,v_2\sin(\theta)+v_1\cos(\theta)-g \\
+\dot{v}_x &= c\*v_2\cos(\theta)-v_1\sin(\theta) \\
+\dot{v}_z &= c\*v_2\sin(\theta)+v_1\cos(\theta)-g \\
 \dot{\theta} &= \dot{\theta} \\
 \ddot{\theta} &= v_2
 \end{aligned}
