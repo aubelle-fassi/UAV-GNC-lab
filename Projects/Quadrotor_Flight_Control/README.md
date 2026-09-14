@@ -34,69 +34,36 @@ Le système étudié est un modèle simplifié d'un quadricoptère évoluant
 dans un plan vertical.
 
 Le vecteur d'état est défini par :
-
-\[
-X =
-\begin{bmatrix}
-x & z & v_x & v_z & \theta & \dot{\theta}
-\end{bmatrix}^{T}
-\]
-
+X=(x, z, v_x, v_z, theta, theta_dot)
 avec :
 
-- \(x\) : position horizontale ;
-- \(z\) : position verticale ;
-- \(v_x\) : vitesse horizontale ;
-- \(v_z\) : vitesse verticale ;
-- \(\theta\) : angle d'attitude ;
-- \(\dot{\theta}\) : vitesse angulaire.
+- x : position horizontale ;
+- z : position verticale ;
+- v_x : vitesse horizontale ;
+- v_z : vitesse verticale ;
+- theta : angle d'attitude ;
+- theta_dot : vitesse angulaire.
 
 Après transformation des variables de commande, la dynamique utilisée
 dans le projet est donnée par :
 
-\[
-\dot{x}=v_x
-\]
-
-\[
-\dot{z}=v_z
-\]
-
-\[
-\dot{v_x}
-=
-c\,v_2\cos(\theta)-v_1\sin(\theta)
-\]
-
-\[
-\dot{v_z}
-=
-c\,v_2\sin(\theta)+v_1\cos(\theta)-g
-\]
-
-\[
-\dot{\theta}=\dot{\theta}
-\]
-
-\[
-\ddot{\theta}=v_2
-\]
-
-Les paramètres physiques du modèle sont définis dans le script
-`main.m`.
-
----
-
+$$
+\begin{aligned}
+\dot{x} &= v_x \\
+\dot{z} &= v_z \\
+\dot{v}_x &= c\,v_2\cos(\theta)-v_1\sin(\theta) \\
+\dot{v}_z &= c\,v_2\sin(\theta)+v_1\cos(\theta)-g \\
+\dot{\theta} &= \dot{\theta} \\
+\ddot{\theta} &= v_2
+\end{aligned}
+$$
 ## 2. Linéarisation du modèle
 
 Afin d'étudier le comportement local du système, le modèle non linéaire
-est linéarisé autour de plusieurs points d'équilibre :
+est linéarisé autour de 03 points d'équilibre : 0°, 10°, 20°
 
-- \(\theta_e=0^\circ\)
-- \(\theta_e=10^\circ\)
-- \(\theta_e=20^\circ\)
 
-Pour \(\theta_e=0^\circ\), le modèle linéarisé s'écrit :
+Pour  le modèle linéarisé s'écrit :
 
 \[
 \delta\dot{X}
