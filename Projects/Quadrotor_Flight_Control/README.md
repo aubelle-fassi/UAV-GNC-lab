@@ -1,66 +1,270 @@
-# UAV-GNC-Lab
+# Contrôle de vol d'un quadricoptère
 
-Bienvenue sur mon portfolio consacré à l'automatique, à l'estimation et
-au contrôle des systèmes autonomes et aéronautiques.
+## Présentation
 
-Ce dépôt rassemble mes travaux académiques et personnels autour de la
-modélisation des systèmes dynamiques, de la commande, de l'observation
-d'état et de l'estimation.
+Ce projet porte sur l'étude de la modélisation, de l'analyse, de la
+commande et de l'estimation d'état d'un quadricoptère évoluant dans un
+plan vertical.
 
-## Domaines étudiés
+Le travail a été réalisé sous MATLAB et Simulink, en considérant d'abord
+le modèle dynamique non linéaire, puis plusieurs modèles linéarisés autour
+de différents points d'équilibre.
 
-- Automatique et contrôle-commande
-- Guidage, navigation et contrôle (GNC)
-- Modélisation de systèmes dynamiques
-- Commande PID et retour d'état
-- LQR
-- Observateurs d'état
-- Filtrage de Kalman et EKF
-- Traitement du signal
-- MATLAB / Simulink
-- Python
+L'objectif est d'étudier progressivement la chaîne de contrôle et
+d'estimation d'un système aéronautique autonome.
 
-## Projets
+## Objectifs
 
-### 01 — Contrôle et estimation d'un quadrotor
+- Modéliser le comportement dynamique non linéaire du quadricoptère.
+- Linéariser le modèle autour de différents points d'équilibre.
+- Étudier la commandabilité et l'observabilité du système.
+- Concevoir un observateur de Luenberger par placement de pôles.
+- Implémenter un observateur non linéaire sous Simulink.
+- Discrétiser le modèle pour une étude en temps discret.
+- Implémenter un filtre de Kalman étendu (EKF).
+- Concevoir une commande par retour d'état.
+- Étudier l'ajout d'une action intégrale.
+- Valider les différentes approches par simulation.
 
-Modélisation et commande d'un drone sous MATLAB/Simulink.
+---
 
-Travaux réalisés :
-- modélisation du système dynamique non linéaire ;
-- linéarisation autour de plusieurs points d'équilibre ;
-- étude de la commandabilité et de l'observabilité ;
-- conception d'un observateur de Luenberger ;
-- passage au temps discret ;
-- implémentation d'un filtre de Kalman étendu (EKF) ;
-- commande par retour d'état ;
-- validation des performances par simulation.
+## 1. Modèle dynamique
 
-### 02 — Modélisation et commande d'une moto auto-équilibrée
+Le système étudié est un modèle simplifié d'un quadricoptère évoluant
+dans un plan vertical.
 
-Étude et simulation d'un système instable nécessitant une stabilisation
-en boucle fermée.
+Le vecteur d'état est défini par :
 
-Travaux réalisés :
-- modélisation physique du système ;
-- implémentation sous MATLAB/Simulink ;
-- conception d'un correcteur PID ;
-- conception d'une commande par retour d'état ;
-- comparaison des performances des deux approches.
+\[
+X =
+\begin{bmatrix}
+x & z & v_x & v_z & \theta & \dot{\theta}
+\end{bmatrix}^{T}
+\]
 
-### 03 — Étude des lois de commande d'un VTOL
+avec :
 
-Étude bibliographique consacrée au contrôle des véhicules à décollage
-et atterrissage verticaux.
+- \(x\) : position horizontale ;
+- \(z\) : position verticale ;
+- \(v_x\) : vitesse horizontale ;
+- \(v_z\) : vitesse verticale ;
+- \(\theta\) : angle d'attitude ;
+- \(\dot{\theta}\) : vitesse angulaire.
 
-Approches étudiées :
-- LQR ;
-- Backstepping ;
-- MPC ;
-- NMPC.
+Après transformation des variables de commande, la dynamique utilisée
+dans le projet est donnée par :
 
-## Objectif du portfolio
+\[
+\dot{x}=v_x
+\]
 
-À travers ces projets, je cherche à développer une compréhension
-progressive des problématiques de contrôle, d'estimation et de
-navigation appliquées aux drones et aux systèmes autonomes.
+\[
+\dot{z}=v_z
+\]
+
+\[
+\dot{v_x}
+=
+c\,v_2\cos(\theta)-v_1\sin(\theta)
+\]
+
+\[
+\dot{v_z}
+=
+c\,v_2\sin(\theta)+v_1\cos(\theta)-g
+\]
+
+\[
+\dot{\theta}=\dot{\theta}
+\]
+
+\[
+\ddot{\theta}=v_2
+\]
+
+Les paramètres physiques du modèle sont définis dans le script
+`main.m`.
+
+---
+
+## 2. Linéarisation du modèle
+
+Afin d'étudier le comportement local du système, le modèle non linéaire
+est linéarisé autour de plusieurs points d'équilibre :
+
+- \(\theta_e=0^\circ\)
+- \(\theta_e=10^\circ\)
+- \(\theta_e=20^\circ\)
+
+Pour \(\theta_e=0^\circ\), le modèle linéarisé s'écrit :
+
+\[
+\delta\dot{X}
+=
+A_0\delta X+B_0\delta U
+\]
+
+avec :
+
+\[
+A_0=
+\begin{bmatrix}
+0&0&1&0&0&0\\
+0&0&0&1&0&0\\
+0&0&0&0&-9.81&0\\
+0&0&0&0&0&0\\
+0&0&0&0&0&1\\
+0&0&0&0&0&0
+\end{bmatrix}
+\]
+
+et
+
+\[
+B_0=
+\begin{bmatrix}
+0&0\\
+0&0\\
+0&0.0007\\
+1&0\\
+0&0\\
+0&1
+\end{bmatrix}
+\]
+
+Les matrices obtenues pour \(10^\circ\) et \(20^\circ\) montrent que la
+dynamique locale dépend de l'angle d'équilibre.
+
+Cette étude permet notamment d'observer l'évolution du couplage entre
+les mouvements horizontaux, verticaux et l'attitude lorsque le point
+de fonctionnement change.
+
+---
+
+## 3. Analyse de la commandabilité et de l'observabilité
+
+La commandabilité du système est étudiée à l'aide de la matrice de
+Kalman :
+
+\[
+\mathcal{C}
+=
+\begin{bmatrix}
+B & AB & A^2B & \cdots & A^{n-1}B
+\end{bmatrix}
+\]
+
+L'observabilité est également étudiée à partir des mesures disponibles.
+
+Dans le cadre de ce projet, les sorties utilisées pour l'estimation
+sont les positions :
+
+\[
+Y=
+\begin{bmatrix}
+x\\
+z
+\end{bmatrix}
+\]
+
+L'étude montre que l'utilisation conjointe des mesures \(x\) et \(z\)
+permet de reconstruire l'ensemble des six états du modèle.
+
+---
+
+## 4. Observateur de Luenberger
+
+Un observateur d'état de Luenberger est conçu à partir du modèle
+linéarisé autour de \(\theta_e=0^\circ\).
+
+L'équation de l'observateur est :
+
+\[
+\dot{\hat{X}}
+=
+A\hat{X}
++
+BU
++
+L(Y-\hat{Y})
+\]
+
+avec :
+
+\[
+\hat{Y}=C\hat{X}
+\]
+
+Le gain \(L\) est obtenu par placement de pôles.
+
+Dans le projet, les pôles de l'observateur sont choisis à :
+
+\[
+-2,\;-4,\;-6,\;-8,\;-10,\;-12
+\]
+
+L'observateur permet ensuite d'estimer les états non directement mesurés
+à partir des positions disponibles.
+
+---
+
+## 5. Observateur non linéaire
+
+L'observateur conçu à partir du modèle linéarisé est ensuite intégré
+dans une architecture utilisant directement la dynamique non linéaire
+du quadricoptère.
+
+L'objectif est de comparer les états réels du modèle avec les états
+reconstruits par l'observateur.
+
+Cette étape permet de vérifier le comportement de l'estimation lorsque
+le système est décrit par sa dynamique non linéaire.
+
+### Modèle Simulink
+
+Le modèle correspondant est disponible dans :
+
+`observateur_non_lineaire.slx`
+
+---
+
+## 6. Passage au temps discret
+
+Le modèle linéarisé est discrétisé avec une période d'échantillonnage :
+
+\[
+T_e=0.01\;s
+\]
+
+La discrétisation est réalisée avec la méthode `ZOH` :
+
+```matlab
+syst_dis = c2d(sys0, Te, 'zoh');
+7. Filtre de Kalman étendu
+
+Un filtre de Kalman étendu (EKF) est implémenté afin d'estimer les six
+états du quadricoptère à partir des mesures de position \(x\) et \(z\).
+
+À chaque période d'échantillonnage, l'algorithme réalise :
+
+la prédiction de l'état à partir du modèle non linéaire ;
+le calcul du Jacobien du modèle ;
+la prédiction de la covariance ;
+le calcul du gain de Kalman ;
+le calcul de l'innovation ;
+la correction de l'état estimé.
+Résultats de l'estimation des etats à partir de l'EKF
+
+Les résultats permettent de comparer les états estimés par l'EKF avec
+les états issus du modèle Simulink.
+
+Par exemple, la vitesse angulaire \(\dot{\theta}\) est comparée entre la
+valeur réelle et la valeur reconstruite par l'EKF.
+
+La figure met en évidence une bonne tendance générale de l'estimation,
+mais également un écart entre la vitesse angulaire réelle et son
+estimation sur une partie de la simulation.
+
+
+Cette différence constitue un point d'analyse intéressant pour améliorer
+le réglage du filtre et les hypothèses du modèle.
