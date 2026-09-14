@@ -45,6 +45,7 @@ $$
 
 avec :
 
+$$
 - \(x\) : position horizontale ;
 - \(z\) : position verticale ;
 - \(v_x\) : vitesse horizontale ;
