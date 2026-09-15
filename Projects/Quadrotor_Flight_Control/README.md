@@ -114,7 +114,7 @@ L'EKF estime les vitesses horizontale et verticales, mais nous remarquons des pe
 ![Estimation de la vitesse verticale](Figures/ekf_vitesse_vz.png)
 
 ### Estimation de vitesse angulaire
-![Estimation de la vitesse horizontle](Figures/ekf_vitesse_angulaire.png)
+![Estimation de la vitesse horizontle](Figures/ekf_vitesseangulaire.png)
 La figure met en évidence une bonne tendance générale de l'estimation,
 mais également un écart entre la vitesse angulaire réelle et son
 estimation sur une partie de la simulation.Cette différence constitue un point d'analyse intéressant pour améliorer le réglage du filtre et les hypothèses du modèle.
