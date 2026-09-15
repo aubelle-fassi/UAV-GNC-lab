@@ -6,8 +6,8 @@ Ce projet porte sur l'étude de la modélisation, de l'analyse, de la
 commande et de l'estimation d'état d'un quadricoptère évoluant dans un
 plan vertical.
 
-Le travail a été réalisé sous MATLAB et Simulink, en considérant d'abord
-le modèle dynamique non linéaire, puis plusieurs modèles linéarisés autour
+Le travail a été réalisé sous MATLAB et Simulink, en considérant 
+le modèle dynamique non linéaire, et plusieurs modèles linéarisés autour
 de différents points d'équilibre.
 
 L'objectif est d'étudier progressivement la chaîne de contrôle et
