@@ -97,17 +97,21 @@ $T_e = 0.01\,s$.
 ## 5. Filtre de kalman etendu 
 Un filtre de Kalman étendu (EKF) est ensuite implémenté  afin d'estimer les six
 états du quadricoptère à partir du modèle non linéaire et des mesures de position $x$ et $z$.
+### Estimation de la position horizontale
+
+L'EKF estime la position horizontale $x$ à partir des mesures disponibles.
+
+![Estimation de la position horizontale](figures/ekf_position_x.png)
+
+La position estimée suit très fidèlement la position réelle obtenue par
+simulation, avec une superposition quasiment complète des deux courbes
+sur l'ensemble de la simulation.
 
 
-
-
-Par exemple, la vitesse angulaire \(\dot{\theta}\) est comparée entre la
-valeur réelle et la valeur reconstruite par l'EKF.
 
 La figure met en évidence une bonne tendance générale de l'estimation,
 mais également un écart entre la vitesse angulaire réelle et son
 estimation sur une partie de la simulation.
-
 
 Cette différence constitue un point d'analyse intéressant pour améliorer
 le réglage du filtre et les hypothèses du modèle.
