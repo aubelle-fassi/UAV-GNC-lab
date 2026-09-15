@@ -65,7 +65,7 @@ $$
 \end{aligned}
 $$
 
-avec $\v_1$ et $\v_2$ les signaux de commandes su systtèmes
+avec $v_1$ et $v_2$ les signaux de commandes su systtèmes
 
 ## 2. Linéarisation du modèle
 
