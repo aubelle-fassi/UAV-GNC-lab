@@ -78,7 +78,7 @@ Cette étude permet notamment d'observer l'évolution du couplage entre
 les mouvements horizontaux, verticaux et l'attitude lorsque le point
 de fonctionnement change.
 
-## Observation et estimation d'état
+## 3.Observatieur d'état
 
 Une première estimation des états est réalisée à l'aide d'un observateur
 de Luenberger conçu par placement de pôles.
@@ -86,48 +86,17 @@ de Luenberger conçu par placement de pôles.
 L'observateur est ensuite intégré au modèle non linéaire afin de comparer
 les états réels aux états estimés.
 
-Le modèle est également discrétisé avec une période d'échantillonnage de
+## 4. Passage au temps discret
+
+Le modèle est ensuite discrétisé avec une période d'échantillonnage de
 $T_e = 0.01\,s$.
 
-Un filtre de Kalman étendu (EKF) est ensuite implémenté à partir du modèle
-non linéaire et des mesures de position $x$ et $z$.
+## 5. Filtre de kalman etendu 
+Un filtre de Kalman étendu (EKF) est ensuite implémenté  afin d'estimer les six
+états du quadricoptère à partir du modèle non linéaire et des mesures de position $x$ et $z$.
 
 
 
-
-
-
-
-
-## 6. Passage au temps discret
-
-Le modèle linéarisé est discrétisé avec une période d'échantillonnage :
-
-\[
-T_e=0.01\;s
-\]
-
-La discrétisation est réalisée avec la méthode `ZOH` :
-
-```matlab
-syst_dis = c2d(sys0, Te, 'zoh');
-7. Filtre de Kalman étendu
-
-Un filtre de Kalman étendu (EKF) est implémenté afin d'estimer les six
-états du quadricoptère à partir des mesures de position \(x\) et \(z\).
-
-À chaque période d'échantillonnage, l'algorithme réalise :
-
-la prédiction de l'état à partir du modèle non linéaire ;
-le calcul du Jacobien du modèle ;
-la prédiction de la covariance ;
-le calcul du gain de Kalman ;
-le calcul de l'innovation ;
-la correction de l'état estimé.
-Résultats de l'estimation des etats à partir de l'EKF
-
-Les résultats permettent de comparer les états estimés par l'EKF avec
-les états issus du modèle Simulink.
 
 Par exemple, la vitesse angulaire \(\dot{\theta}\) est comparée entre la
 valeur réelle et la valeur reconstruite par l'EKF.
