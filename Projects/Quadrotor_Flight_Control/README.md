@@ -64,7 +64,9 @@ $$
 \ddot{\theta} &= v_2
 \end{aligned}
 $$
+
 avec $\v_1$ et $\v_2$ les signaux de commandes su systtèmes
+
 ## 2. Linéarisation du modèle
 
 Afin d'étudier le comportement local du système, le modèle non linéaire
