@@ -103,18 +103,21 @@ Un filtre de Kalman étendu (EKF) est ensuite implémenté  afin d'estimer les s
 ![Estimation de la position horizontale](Figures/ekf_position_x.png)
 ![Estimation de la position vertricale](Figures/ekf_position_z.png)
 ![Estimation de la position angulaire](Figures/ekf_angle.png)
+
 Les positions estimées suit très fidèlement les positions réelles obtenues par
 simulation, avec une superposition quasiment complète des deux courbes
 sur l'ensemble de la simulation.
 
 ### Estimation des vitesses horizontale, verticale 
 
-L'EKF estime les vitesses horizontale et verticales, mais nous remarquons des petits dephasages entre es vitesses réelles et les vitesses estimées par l'EKF .
 ![Estimation de la vitesse horizontle](Figures/ekf_vitesse_vx.png)
 ![Estimation de la vitesse verticale](Figures/ekf_vitesse_vz.png)
 
+L'estimation sur les vitesses horizontale et verticales faite par l'EKF suit bien la dynamique réelle, mais nous remarquons des petits dephasages entre es vitesses réelles et les vitesses estimées par l'EKF .
+
 ### Estimation de vitesse angulaire
-![Estimation de la vitesse horizontle](Figures/ekf_vitesseangulaire.png)
+
+![Estimation de la vitesse horizontle](Figures/ekf_vitesse_angulaire.png)
 La figure met en évidence une bonne tendance générale de l'estimation,
 mais également un écart entre la vitesse angulaire réelle et son
 estimation sur une partie de la simulation.Cette différence constitue un point d'analyse intéressant pour améliorer le réglage du filtre et les hypothèses du modèle.
