@@ -33,12 +33,12 @@ D=zeros(4,2);
 sys0 = ss(A0,B0,C,D);
 sys10 = ss(A01,B01,C,D);
 sys20 = ss(A02,B02,C,D);
-% figure
-% bode(sys0)
-% figure
-% bode(sys10)
-% figure
-% bode(sys20)
+figure
+bode(sys0)
+figure
+bode(sys10)
+figure
+bode(sys20)
 
 %poles des systèmes linéarisés 
 lambda0=eig(A0);
