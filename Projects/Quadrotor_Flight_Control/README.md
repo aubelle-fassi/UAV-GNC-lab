@@ -71,7 +71,8 @@ est linéarisé autour de 03 points d'équilibre :
 - $\theta_e = 0^\circ$
 - $\theta_e = 10^\circ$
 - $\theta_e = 20^\circ$
-Les matrices obtenues pour $\(10^\circ\)^$ et $\(20^\circ\)$ montrent que la
+  
+Les matrices obtenues pour 10° et 20° montrent que la
 dynamique locale dépend de l'angle d'équilibre.
 Cette étude permet notamment d'observer l'évolution du couplage entre
 les mouvements horizontaux, verticaux et l'attitude lorsque le point
@@ -93,9 +94,10 @@ non linéaire et des mesures de position $x$ et $z$.
 
 
 
-`observateur_non_lineaire.slx`
 
----
+
+
+
 
 ## 6. Passage au temps discret
 
