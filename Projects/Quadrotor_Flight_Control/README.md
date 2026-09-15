@@ -101,7 +101,7 @@ Un filtre de Kalman étendu (EKF) est ensuite implémenté  afin d'estimer les s
 
 L'EKF estime la position horizontale $x$ à partir des mesures disponibles.
 
-![Estimation de la position horizontale](figures/ekf_position_x.png)
+![Estimation de la position horizontale](Figures/ekf_position_x.png)
 
 La position estimée suit très fidèlement la position réelle obtenue par
 simulation, avec une superposition quasiment complète des deux courbes
