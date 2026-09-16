@@ -1,81 +1,77 @@
-# 🚁 VTOL Control
+# 🚁 Contrôle des aéronefs à décollage et atterrissage verticaux (VTOL)
 
-**Modeling and Control of a Vertical Take-Off and Landing (VTOL) Aircraft**
+**Modélisation et contrôle d’un aéronef à décollage et atterrissage verticaux (VTOL)**
 
-## Overview
+## Présentation générale
 
-This project focuses on the modeling and control of a Vertical Take-Off and Landing (VTOL) aircraft using modern control engineering techniques.
+Ce projet porte sur la modélisation et le contrôle d’un aéronef à décollage et atterrissage verticaux (VTOL) à l’aide de techniques modernes d’ingénierie de contrôle.
 
-The objective is to progressively develop a complete control framework, from the mathematical modeling of the system to the implementation and evaluation of advanced control strategies in MATLAB and Simulink.
+L'objectif est de développer progressivement un cadre de contrôle complet, depuis la modélisation mathématique du système jusqu'à la mise en œuvre et l'évaluation de stratégies de contrôle avancées dans MATLAB et Simulink.
 
-This project is part of my **UAV-GNC-Lab**, a personal engineering portfolio dedicated to Guidance, Navigation and Control (GNC) for autonomous aerial vehicles.
-
----
-
-## Objectives
-
-The main objectives of this project are:
-
-- Develop the nonlinear dynamic model of a VTOL aircraft.
-- Derive the state-space representation.
-- Implement the mathematical model in MATLAB/Simulink.
-- Design and evaluate different control strategies.
-- Compare the performance of several controllers.
-- Build a reusable simulation framework for future UAV control studies.
+Ce projet s’inscrit dans le cadre de mon **UAV-GNC-Lab**, un portfolio d’ingénierie personnel consacré au guidage, à la navigation et au contrôle (GNC) des véhicules aériens autonomes.
 
 ---
 
-## Current Progress
+## Objectifs
 
-### Completed
+Les principaux objectifs de ce projet sont les suivants :
 
-- Literature review on VTOL systems.
-- Dynamic modeling of the VTOL.
-- State-space representation.
+- Développer le modèle dynamique non linéaire d’un aéronef VTOL.
+- Dériver la représentation en espace d’état.
+- Implémenter le modèle mathématique dans MATLAB/Simulink.
+- Concevoir et évaluer différentes stratégies de contrôle.
+- Comparer les performances de plusieurs contrôleurs.
+- Construire un cadre de simulation réutilisable pour de futures études sur le contrôle des drones.
 
-### In Progress
+---
 
-- MATLAB implementation of the dynamic model.
-- Simulation and validation of the mathematical model.
+## État d’avancement
 
-### Planned
+### Terminé
 
-- PID Control
-- State Feedback Control
-- LQR Control
-- Model Predictive Control (MPC)
-- Nonlinear Model Predictive Control (NMPC)
-- Performance comparison of control strategies
+- Revue de la littérature sur les systèmes VTOL.
+- Modélisation dynamique du VTOL.
+- Représentation en espace d’état.
+
+### En cours
+
+- Implémentation du modèle dynamique sous MATLAB.
+- Simulation et validation du modèle mathématique.
+
+### Prévu
+
+- Commande PID
+- Commande par rétroaction d'état
+- Commande LQR
+- Commande prédictive par modèle (MPC)
+- Commande prédictive par modèle non linéaire (NMPC)
+- Comparaison des performances des stratégies de commande
 
 
-## Tools
+## Outils
 
 - MATLAB
 - Simulink
 
+## Thèmes
 
-## Topics
-
-- Flight Dynamics
-- Automatic Control
-- State-Space Modeling
-- Control Theory
-- UAV Systems
+- Dynamique de vol
+- Commande automatique
+- Modélisation en espace d'états
+- Théorie du contrôle
+- Systèmes de drones
 - VTOL
 
+## Travaux futurs
 
-## Future Work
+Ce projet sera continuellement enrichi de nouvelles stratégies de commande, simulations et analyses techniques.
 
-This project will be continuously expanded with new control strategies, simulations and technical analyses.
-
-The long-term objective is to build a complete VTOL control study including both classical and advanced control approaches for autonomous aerial vehicles.
+L'objectif à long terme est de mener une étude complète sur le contrôle des VTOL, incluant à la fois des approches classiques et avancées pour les véhicules aériens autonomes.
 
 
-## Author
+## Auteur
 
 **Aubelle Doria Djikeng Fassi**
 
-Master's student in Automatic Control, Robotics and Signal Processing  
-Polytech Orléans – France
 
-**UAV-GNC-Lab**
+
