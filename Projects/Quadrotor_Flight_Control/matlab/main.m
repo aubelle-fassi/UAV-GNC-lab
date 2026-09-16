@@ -140,18 +140,51 @@ end
 % temps=(0:N-1)*Te;
 % donnees_simulink=
 temps = (0:N-1)*Te;
+temps = (0:N-1)*Te;
 figure;
-% Courbe 1 estimation issue de l'EKF
-plot(temps, x_historique(5, :), 'r', 'LineWidth', 2); hold on;
-
-% Courbe 2 trajectoire récupérée de Simulink
-theta_vrai = out.theta_reel_sim; 
-plot(temps, theta_vrai, 'b--', 'LineWidth', 1.5);
-
+plot(temps,x_historique(1,:), 'r' , 'LineWidth', 2); hold on;
+x_vrai=out.simout1;
+plot(temps,x_vrai, 'b--', 'LineWidth',1.5);
 grid on;
 xlabel('Temps (secondes)');
-ylabel('Angle \theta (radians)');
-title('Superposition parfaite de la dynamique réelle et de l''estimation EKF');
+ylabel('position x (m)');
+title('courbes postion réelle et estimée l''EKF');
+legend('position x Estimée (EKF)', 'position x Réel (Simulink)');
+figure;
+plot(temps,x_historique(2,:), 'r' , 'LineWidth', 2); hold on;
+z_vrai=out.simout2;
+plot(temps,z_vrai, 'b--', 'LineWidth',1.5);
+grid on;
+xlabel('Temps (secondes)');
+ylabel('position z (m)');
+title('courbes postion réelle et estiméepar l''EKF');
+legend('position z Estimée (EKF)', 'position z Réel (Simulink)');
+figure;
+plot(temps,x_historique(3,:), 'r' , 'LineWidth', 2); hold on;
+vx_vrai=out.simout3;
+plot(temps,vx_vrai, 'b--', 'LineWidth',1.5);
+grid on;
+xlabel('Temps (secondes)');
+ylabel('position vx (m/s)');
+title('courbes vitesse réelle et vitesse estimée par l''EKF');
+legend('vitesse vx Estimée (EKF)', 'vitesse vx Réel (Simulink)');
+figure;
+plot(temps,x_historique(4,:), 'r' , 'LineWidth', 2); hold on;
+vz_vrai=out.simout4;
+plot(temps,vz_vrai, 'b--', 'LineWidth',1.5);
+grid on;
+xlabel('Temps (secondes)');
+ylabel('vitesse vz (m/s)');
+title('courbes vitesse réelle et vitesse estimée par l''EKF');
+legend('vitesse vz Estimée (EKF)', 'vitesse vz Réel (Simulink)');
+figure;
+plot(temps, x_historique(5, :), 'r', 'LineWidth', 2); hold on;
+theta_vrai = out.theta_reel_sim; 
+plot(temps, theta_vrai, 'b--', 'LineWidth', 1.5);
+grid on;
+xlabel('Temps (secondes)');
+ylabel('Angle theta (radians)');
+title('Courbes angle réelle et angle estimé par l''EKF');
 legend('Angle Estimé (EKF)', 'Angle Réel (Simulink)');
 figure;
 plot(temps, x_historique(6, :), 'r', 'LineWidth', 2); hold on;
@@ -160,7 +193,7 @@ plot(temps, theta_dotvrai, 'b--', 'LineWidth', 1.5);
 grid on;
 xlabel('Temps (secondes)');
 ylabel('Vitesse angulaire  theta_dot (radians/s)');
-title('Estimation de la vitesse angulaire avec EKF');
+title('Courbes de la vitesse angulaire reelle et estimée avec EKF');
 legend('Vitesse angulaire Estimée (EKF)', 'Vitesse angulaire Réelle (Simulink)');
 % Commande
 % kd = place(Ad,Bd, exp(Te*[-10, -15, -20, -25, -30, -35]));
