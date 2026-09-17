@@ -1,7 +1,7 @@
 # 🚁 UAV-GNC-Lab
 
 Bienvenue sur mon portfolio consacré à l'automatique, à l'estimation et
-au contrôle des systèmes autonomes et aéronautiques.
+au contrôle commande des systèmes autonomes et aéronautiques.
 
 Ce dépôt rassemble mes travaux académiques et personnels autour de la
 modélisation des systèmes dynamiques, de la commande, de l'observation
@@ -12,7 +12,7 @@ d'état et de l'estimation.
 - Automatique et contrôle-commande
 - Guidage, navigation et contrôle (GNC)
 - Modélisation de systèmes dynamiques
-- Commande PID,LQR et retour d'état
+- Loi de Commande (PID,LQR et retour d'état,etc)
 - Observateurs d'état
 - Filtrage de Kalman et EKF
 - Traitement du signal
